@@ -1,0 +1,36 @@
+[
+    {
+        "SUBJECT": "CSE",
+        "CATALOGNBR": "205",
+        "COURSETITLELONG": "Object-Oriented Programming and Data Structures",
+        "COMPONENTPRIMARY": "LEC",
+        "ALLOWMULTENROLL": "N",
+        "CRSEREPEATABLE": "N",
+        "GRADINGBASIS": "OPT",
+        "ACADORG": "CCOMPENG",
+        "COLLEGEMAP": [
+            {
+                "DEPARTMENT": "Computer Science and Engineering Program",
+                "INFO": {
+                    "ACADORG": "CES",
+                    "ASUCOLLEGEURL": "https://engineering.asu.edu/",
+                    "DESCRFORMAL": "Ira A. Fulton Schools of Engineering",
+                    "ENROLLREQ": "Prerequisite(s): CSE 100 or 110 with C or better OR Data Science, Analytics and Engineering PhD, Industrial Engineering MS, or Industrial Engineering PhD student; Credit is allowed for only ACO 102 or CSE 205 OR Visiting University Student",
+                    "ACADGROUP": "ES"
+                }
+            }
+        ],
+        "DESCRLONG": "Problem solving by programming with an object-oriented programming language. Introduces data structures. Overview of computer science topics.",
+        "COMPONENTDESCR": "Lecture",
+        "GRADINGBASISDESCR": "Student Option",
+        "DESCR4": "QTRS OR CS",
+        "CRSEID": "104182",
+        "HOURS": "3",
+        "UNITSMAXIMUM": "3",
+        "UNITSMINIMUM": "3",
+        "SUBJECTDESCR": "Computer Science and Engineering",
+        "TOPICSLIST": [],
+        "GSGOLD": "QTRS",
+        "GSMAROON": "CS"
+    }
+]
