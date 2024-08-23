@@ -5,12 +5,11 @@
 package main
 
  import (
-	 // "os"
 	 "encoding/json"
 	 "flag"
 	 "fmt"
 	 "io"
-	 "log"
+	//  "log"
 	 "net/http"
 	 "os"
 	 "net/url"
@@ -56,7 +55,9 @@ func main() {
 	searchCourses := flag.NewFlagSet("courses", flag.ExitOnError)
 	subject := searchCourses.String("subject", "", "subject")
 	catalogNbr := searchCourses.String("catalogNbr", "", "catalogNbr")
-	apiUrl, _ := url.Parse("https://eadvs-cscc-catalog-api.apps.asu.edu/catalog-microservices/api/v1")
+	term := searchCourses.String("term", "", "term")
+	refine := searchCourses.String("refine", "", "refine")
+	apiUrl, _ := url.Parse("https://eadvs-cscc-catalog-api.apps.asu.edu/catalog-microservices/api/v1/search/courses")
 
 	
 	queryString := apiUrl.Query()
@@ -74,7 +75,7 @@ func main() {
 	case "courses":
 		searchCourses.Parse(os.Args[2:])
 
-		//debug
+		//clean this up
 		if isFlagPassed("subject", searchCourses) {
 			queryString.Add("subject", *subject)
 		}
@@ -83,12 +84,14 @@ func main() {
 			queryString.Add("catalogNbr", *catalogNbr)
 		}
 
+		if isFlagPassed("term", searchCourses) {
+			queryString.Add("term", *term)
+		}
 
-		// depending on what search param (courses/classes/subjects/terms) is used
-		// the nested commands will be different etc
-		
-		//debug
-		fmt.Println(queryString)
+		if isFlagPassed("refine", searchCourses) {
+			queryString.Add("refine", *refine)
+		}
+
 	default:
 		fmt.Println("unknown command")
 		os.Exit(1)
@@ -97,17 +100,17 @@ func main() {
 	apiUrl.RawQuery = queryString.Encode()
 
 	fmt.Println(apiUrl.String())
-	// fmt.Println(isFlagPassed("subject", searchCourses))
+	
 	// will be used to make requests with headers (doesn't seem like
 	// default http.Get() command can use headers
 	client := &http.Client{}
-	// queryParams := "/search/" + searchCourses.Name() + queryString.Encode()
+	
 
 	// creating the request itself, afaik it doesn't actually send it yet
 	// since I'm literally just creating a new request
 	req, err := http.NewRequest("GET", (apiUrl.String()), nil)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	
@@ -117,24 +120,23 @@ func main() {
 	// finally, sending the actual request via the client with the headers included
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	var course Course
+
 	err = json.Unmarshal(body, &course)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
-	// by default, response is a byte slice (research it), so it must be converted
-	// to a string
-	fmt.Println(course[0].Subject)
+	fmt.Printf("Subject: %v\nCatalog Number: %v\nTitle: %v\nDescription: %v", course[0].Subject, course[0].Catalognbr, course[0].Coursetitlelong, course[0].Descrlong)
 }
 
 func isFlagPassed(name string, flagSetToVisit *flag.FlagSet) bool {
